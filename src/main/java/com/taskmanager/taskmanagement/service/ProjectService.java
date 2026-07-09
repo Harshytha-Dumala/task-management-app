@@ -4,6 +4,7 @@ import com.taskmanager.taskmanagement.entity.Project;
 import com.taskmanager.taskmanagement.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.taskmanager.taskmanagement.dto.ProjectDTO;
 
 import java.util.List;
 
@@ -34,5 +35,8 @@ public class ProjectService {
 
     public void deleteProject(Long id) {
         projectRepository.deleteById(id);
+    }
+    public ProjectDTO convertToDTO(Project project) {
+        return new ProjectDTO(project.getId(), project.getName(), project.getDescription());
     }
 }

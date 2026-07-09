@@ -1,5 +1,6 @@
 package com.taskmanager.taskmanagement.controller;
 
+import com.taskmanager.taskmanagement.dto.TaskDTO;
 import com.taskmanager.taskmanagement.entity.Task;
 import com.taskmanager.taskmanagement.entity.TaskStatus;
 import com.taskmanager.taskmanagement.service.TaskService;
@@ -21,19 +22,24 @@ public class TaskController {
     }
 
     @GetMapping
-    public List<Task> getAllTasks() {
-        return taskService.getAllTasks();
+    public List<TaskDTO> getAllTasks() {
+        return taskService.getAllTasks().stream()
+                .map(taskService::convertToDTO)
+                .toList();
     }
 
     @GetMapping("/{id}")
-    public Task getTaskById(@PathVariable Long id) {
-        return taskService.getTaskById(id);
+    public TaskDTO getTaskById(@PathVariable Long id) {
+        return taskService.convertToDTO(taskService.getTaskById(id));
     }
 
     @GetMapping("/status/{status}")
-    public List<Task> getTasksByStatus(@PathVariable TaskStatus status) {
-        return taskService.getTasksByStatus(status);
+    public List<TaskDTO> getTasksByStatus(@PathVariable TaskStatus status) {
+        return taskService.getTasksByStatus(status).stream()
+                .map(taskService::convertToDTO)
+                .toList();
     }
+
     @PutMapping("/{id}")
     public Task updateTask(@PathVariable Long id, @RequestBody Task task) {
         return taskService.updateTask(id, task);

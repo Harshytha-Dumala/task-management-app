@@ -5,6 +5,7 @@ import com.taskmanager.taskmanagement.entity.TaskStatus;
 import com.taskmanager.taskmanagement.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.taskmanager.taskmanagement.dto.TaskDTO;
 
 import java.util.List;
 
@@ -40,5 +41,17 @@ public class TaskService {
 
     public void deleteTask(Long id) {
         taskRepository.deleteById(id);
+    }
+    public TaskDTO convertToDTO(Task task) {
+        return new TaskDTO(
+                task.getId(),
+                task.getTitle(),
+                task.getDescription(),
+                task.getStatus(),
+                task.getProject() != null ? task.getProject().getId() : null,
+                task.getProject() != null ? task.getProject().getName() : null,
+                task.getAssignedUser() != null ? task.getAssignedUser().getId() : null,
+                task.getAssignedUser() != null ? task.getAssignedUser().getName() : null
+        );
     }
 }
