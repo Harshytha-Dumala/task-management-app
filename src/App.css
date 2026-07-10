@@ -36,3 +36,88 @@
     transform: rotate(360deg);
   }
 }
+
+:root {
+  --color-red: #A67B5B;
+  --color-cream: #F5F0E6;
+  --color-green: #8B9A7B;
+  --color-dark-green: #6B5D4F;
+}
+
+body {
+  background-color: var(--color-cream);
+}
+
+.navbar-custom {
+  background-color: var(--color-dark-green);
+}
+
+.nav-tab-link {
+  color: #ffffffcc;
+  text-decoration: none;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.nav-tab-link:hover {
+  background-color: rgba(255,255,255,0.1);
+  color: #fff;
+}
+
+.nav-tab-link.active {
+  background-color: var(--color-red);
+  color: #fff;
+}
+
+.profile-btn {
+  background-color: var(--color-red);
+  color: #fff;
+  border: none;
+}
+
+.profile-btn:hover {
+  background-color: #a53a3a;
+  color: #fff;
+}
+
+.role-badge {
+  background-color: var(--color-green);
+  color: #fff;
+}
+
+.logout-btn {
+  background-color: var(--color-red);
+  color: #fff;
+  border: none;
+}
+
+.logout-btn:hover {
+  background-color: #a53a3a;
+  color: #fff;
+}
+
+.card {
+  border: none;
+  border-radius: 10px;
+}
+
+.btn-primary {
+  background-color: var(--color-red) !important;
+  border-color: var(--color-red) !important;
+}
+
+.btn-primary:hover {
+  background-color: #a53a3a !important;
+  border-color: #a53a3a !important;
+}
+
+.btn-success {
+  background-color: var(--color-green) !important;
+  border-color: var(--color-green) !important;
+}
+
+.progress-bar.bg-success {
+  background-color: var(--color-green) !important;
+}

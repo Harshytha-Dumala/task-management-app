@@ -1,17 +1,22 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { login } from '../services/api';
 
-function Login({ onLogin, goToRegister }) {
+function Login({ onLogin }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const response = await login({ email, password });
             localStorage.setItem('token', response.data.token);
-            onLogin();
+            localStorage.setItem('role', response.data.role);
+            localStorage.setItem('name', response.data.name);
+            localStorage.setItem('email', response.data.email);
+            onLogin(response.data.role);
         } catch (err) {
             setError('Invalid email or password');
         }
@@ -35,7 +40,7 @@ function Login({ onLogin, goToRegister }) {
                 </form>
                 <p className="text-center mt-3 mb-0">
                     Don't have an account?{' '}
-                    <span className="text-primary" style={{ cursor: 'pointer' }} onClick={goToRegister}>
+                    <span className="text-primary" style={{ cursor: 'pointer' }} onClick={() => navigate('/register')}>
                         Register
                     </span>
                 </p>

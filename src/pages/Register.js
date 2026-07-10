@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { register } from '../services/api';
 
-function Register({ onRegister, goToLogin }) {
+function Register() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [role, setRole] = useState('EMPLOYEE');
     const [error, setError] = useState('');
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await register({ name, email, password });
-            onRegister();
+            await register({ name, email, password, role });
+            navigate('/login');
         } catch (err) {
             setError('Registration failed. Email may already be in use.');
         }
@@ -35,11 +38,18 @@ function Register({ onRegister, goToLogin }) {
                         <input type="password" className="form-control" placeholder="Password"
                                value={password} onChange={(e) => setPassword(e.target.value)} />
                     </div>
+                    <div className="mb-3">
+                        <label className="form-label">Role</label>
+                        <select className="form-select" value={role} onChange={(e) => setRole(e.target.value)}>
+                            <option value="EMPLOYEE">Employee</option>
+                            <option value="MANAGER">Manager</option>
+                        </select>
+                    </div>
                     <button type="submit" className="btn btn-primary w-100">Register</button>
                 </form>
                 <p className="text-center mt-3 mb-0">
                     Already have an account?{' '}
-                    <span className="text-primary" style={{ cursor: 'pointer' }} onClick={goToLogin}>
+                    <span className="text-primary" style={{ cursor: 'pointer' }} onClick={() => navigate('/login')}>
                         Login
                     </span>
                 </p>

@@ -25,11 +25,17 @@ export const createProject = (data) =>
 export const getTasks = () =>
     axios.get(`${API_URL}/tasks`, { headers: getAuthHeader() });
 
+export const getMyTasks = () =>
+    axios.get(`${API_URL}/tasks/my-tasks`, { headers: getAuthHeader() });
+
 export const createTask = (data) =>
     axios.post(`${API_URL}/tasks`, data, { headers: getAuthHeader() });
 
 export const updateTask = (id, data) =>
     axios.put(`${API_URL}/tasks/${id}`, data, { headers: getAuthHeader() });
+
+export const updateTaskProgress = (id, data) =>
+    axios.put(`${API_URL}/tasks/${id}/progress`, data, { headers: getAuthHeader() });
 
 export const deleteTask = (id) =>
     axios.delete(`${API_URL}/tasks/${id}`, { headers: getAuthHeader() });
