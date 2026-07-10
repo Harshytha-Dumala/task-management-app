@@ -39,3 +39,7 @@ export const updateTaskProgress = (id, data) =>
 
 export const deleteTask = (id) =>
     axios.delete(`${API_URL}/tasks/${id}`, { headers: getAuthHeader() });
+export const getMyProfile = () =>
+    axios.get(`${API_URL}/users/me`, { headers: getAuthHeader() });
+export const updateMyProfile = (data) =>
+    axios.put(`${API_URL}/users/me`, data, { headers: getAuthHeader() });

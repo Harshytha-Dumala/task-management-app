@@ -1,11 +1,10 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import ProfileModal from './ProfileModal';
 
 function Navbar({ tabs, onLogout }) {
     const location = useLocation();
     const name = localStorage.getItem('name');
-    const email = localStorage.getItem('email');
-    const role = localStorage.getItem('role');
 
     return (
         <nav className="navbar-custom d-flex justify-content-between align-items-center px-4 py-2">
@@ -24,22 +23,14 @@ function Navbar({ tabs, onLogout }) {
                 </div>
             </div>
 
-            <div className="dropdown">
-                <button className="btn profile-btn dropdown-toggle" type="button" data-bs-toggle="dropdown">
+            <div className="d-flex align-items-center gap-2">
+                <button className="btn profile-btn" data-bs-toggle="modal" data-bs-target="#profileModal">
                     {name || 'Profile'}
                 </button>
-                <ul className="dropdown-menu dropdown-menu-end p-3" style={{ minWidth: '220px' }}>
-                    <li className="mb-1"><strong>{name}</strong></li>
-                    <li className="mb-1 text-muted small">{email}</li>
-                    <li className="mb-2">
-                        <span className="badge role-badge">{role}</span>
-                    </li>
-                    <li><hr className="dropdown-divider" /></li>
-                    <li>
-                        <button className="btn btn-sm w-100 logout-btn" onClick={onLogout}>Logout</button>
-                    </li>
-                </ul>
+                <button className="btn logout-btn" onClick={onLogout}>Logout</button>
             </div>
+
+            <ProfileModal />
         </nav>
     );
 }

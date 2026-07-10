@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
-import Overview from '../components/Overview';
 import { getMyTasks, updateTaskProgress } from '../services/api';
 
 function MyTasks() {
@@ -93,8 +92,7 @@ function EmployeeDashboard({ onLogout }) {
     };
 
     const tabs = [
-        { path: '/', label: 'Overview' },
-        { path: '/my-tasks', label: 'My Tasks' },
+        { path: '/', label: 'My Tasks' },
     ];
 
     return (
@@ -102,8 +100,7 @@ function EmployeeDashboard({ onLogout }) {
             <Navbar tabs={tabs} onLogout={handleLogout} />
             <div className="p-4">
                 <Routes>
-                    <Route path="/" element={<Overview role="EMPLOYEE" />} />
-                    <Route path="/my-tasks" element={<MyTasks />} />
+                    <Route path="/" element={<MyTasks />} />
                 </Routes>
             </div>
         </div>
