@@ -67,14 +67,15 @@ public class TaskController {
         Task updated = taskService.updateProgress(id, progress, updateNote, email);
         return taskService.convertToDTO(updated);
     }
+    @PutMapping("/{id}/mark-seen")
+    public void markSeen(@PathVariable Long id, Authentication authentication) {
+        taskService.markTaskSeen(id, authentication.getName());
+    }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('MANAGER')")
     public void deleteTask(@PathVariable Long id) {
         taskService.deleteTask(id);
     }
-    @PutMapping("/mark-seen")
-    public void markSeen(Authentication authentication) {
-        taskService.markAllMyTasksSeen(authentication.getName());
-    }
+
 }

@@ -44,17 +44,19 @@ public class TaskService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
         return taskRepository.findByAssignedUserId(user.getId());
     }
-    public void markAllMyTasksSeen(String email) {
+    public void markTaskSeen(Long taskId, String email) {
+        Task task = getTaskById(taskId);
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        List<Task> tasks = taskRepository.findByAssignedUserId(user.getId());
-        for (Task t : tasks) {
-            if (Boolean.FALSE.equals(t.getSeenByAssignee())) {
-                t.setSeenByAssignee(true);
-                taskRepository.save(t);
-            }
+
+        if (task.getAssignedUser() == null || !task.getAssignedUser().getId().equals(user.getId())) {
+            throw new RuntimeException("You are not assigned to this task");
         }
+
+        task.setSeenByAssignee(true);
+        taskRepository.save(task);
     }
+
 
     public Task updateTask(Long id, Task updatedTask) {
         Task existing = getTaskById(id);

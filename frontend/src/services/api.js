@@ -13,8 +13,9 @@ export const getUserById = (id) =>
     axios.get(`${API_URL}/users/${id}`, { headers: getAuthHeader() });
 export const login = (data) =>
     axios.post(`${API_URL}/auth/login`, data);
-export const markTasksSeen = () =>
-    axios.put(`${API_URL}/tasks/mark-seen`, {}, { headers: getAuthHeader() });
+export const markTaskSeen = (id) =>
+    axios.put(`${API_URL}/tasks/${id}/mark-seen`, {}, { headers: getAuthHeader() });
+
 export const getUsers = () =>
     axios.get(`${API_URL}/users`, { headers: getAuthHeader() });
 
