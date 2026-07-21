@@ -12,9 +12,7 @@ function ManagerDashboard({ onLogout }) {
         navigate('/login');
     };
 
-    const tabs = [
-        { path: '/', label: 'Projects' },
-    ];
+    const tabs = [];
 
     return (
         <div>

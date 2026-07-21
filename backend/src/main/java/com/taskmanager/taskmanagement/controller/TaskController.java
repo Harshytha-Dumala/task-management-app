@@ -19,11 +19,6 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
-    @PostMapping
-    @PreAuthorize("hasRole('MANAGER')")
-    public Task createTask(@RequestBody Task task) {
-        return taskService.createTask(task);
-    }
 
     @GetMapping
     @PreAuthorize("hasRole('MANAGER')")
@@ -32,7 +27,11 @@ public class TaskController {
                 .map(taskService::convertToDTO)
                 .toList();
     }
-
+    @PostMapping
+    @PreAuthorize("hasRole('MANAGER')")
+    public Task createTask(@RequestBody Task task, Authentication authentication) {
+        return taskService.createTask(task, authentication.getName());
+    }
     @GetMapping("/my-tasks")
     public List<TaskDTO> getMyTasks(Authentication authentication) {
         String email = authentication.getName();
@@ -73,5 +72,9 @@ public class TaskController {
     @PreAuthorize("hasRole('MANAGER')")
     public void deleteTask(@PathVariable Long id) {
         taskService.deleteTask(id);
+    }
+    @PutMapping("/mark-seen")
+    public void markSeen(Authentication authentication) {
+        taskService.markAllMyTasksSeen(authentication.getName());
     }
 }

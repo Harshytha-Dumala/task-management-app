@@ -58,6 +58,12 @@ function ProjectsList() {
                             <div className="card p-3 shadow-sm h-100">
                                 <strong>{p.name}</strong>
                                 <div className="text-muted small mt-1">{p.description}</div>
+                                <div className="mt-2">
+                                    <div className="progress" style={{ height: '8px' }}>
+                                        <div className="progress-bar bg-success" style={{ width: `${Math.round(p.averageProgress || 0)}%` }} />
+                                    </div>
+                                    <small className="text-muted">{Math.round(p.averageProgress || 0)}% average progress</small>
+                                </div>
                             </div>
                         </Link>
                     </div>

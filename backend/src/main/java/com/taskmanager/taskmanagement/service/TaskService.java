@@ -20,10 +20,12 @@ public class TaskService {
     @Autowired
     private UserRepository userRepository;
 
-    public Task createTask(Task task) {
+    public Task createTask(Task task, String managerEmail) {
+        User manager = userRepository.findByEmail(managerEmail)
+                .orElseThrow(() -> new RuntimeException("Manager not found"));
+        task.setAssignedBy(manager);
         return taskRepository.save(task);
     }
-
     public List<Task> getAllTasks() {
         return taskRepository.findAll();
     }
@@ -42,13 +44,23 @@ public class TaskService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
         return taskRepository.findByAssignedUserId(user.getId());
     }
+    public void markAllMyTasksSeen(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        List<Task> tasks = taskRepository.findByAssignedUserId(user.getId());
+        for (Task t : tasks) {
+            if (Boolean.FALSE.equals(t.getSeenByAssignee())) {
+                t.setSeenByAssignee(true);
+                taskRepository.save(t);
+            }
+        }
+    }
 
     public Task updateTask(Long id, Task updatedTask) {
         Task existing = getTaskById(id);
         existing.setTitle(updatedTask.getTitle());
         existing.setDescription(updatedTask.getDescription());
         existing.setStatus(updatedTask.getStatus());
-        existing.setPriority(updatedTask.getPriority());
         existing.setDueDate(updatedTask.getDueDate());
         return taskRepository.save(existing);
     }
@@ -84,12 +96,15 @@ public class TaskService {
                 task.getStatus(),
                 task.getProgress(),
                 task.getDueDate(),
-                task.getPriority(),
                 task.getUpdateNote(),
                 task.getProject() != null ? task.getProject().getId() : null,
                 task.getProject() != null ? task.getProject().getName() : null,
                 task.getAssignedUser() != null ? task.getAssignedUser().getId() : null,
-                task.getAssignedUser() != null ? task.getAssignedUser().getName() : null
+                task.getAssignedUser() != null ? task.getAssignedUser().getName() : null,
+                task.getAssignedBy() != null ? task.getAssignedBy().getName() : null,
+                task.getSeenByAssignee()
         );
+
     }
+
 }

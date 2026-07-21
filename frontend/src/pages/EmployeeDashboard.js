@@ -19,7 +19,9 @@ function MyTasks() {
     };
 
     const startEdit = (task) => {
-        setEditingId(task.id);
+        setEditingId(task.id);const tabs = [
+            { path: '/', label: 'Projects' },
+        ];
         setProgressInput(task.progress || 0);
         setNoteInput(task.updateNote || '');
     };
@@ -30,24 +32,29 @@ function MyTasks() {
         loadTasks();
     };
 
-    const priorityBadge = (priority) => {
-        if (priority === 'HIGH') return 'bg-danger';
-        if (priority === 'MEDIUM') return 'bg-warning text-dark';
-        return 'bg-secondary';
+    const formatStatus = (status) => {
+        if (status === 'IN_PROGRESS') return 'In Progress';
+        if (status === 'DONE') return 'Done';
+        if (status === 'TODO') return 'To Do';
+        return status;
     };
-
+    const isOverdue = (task) => {
+        if (!task.dueDate || task.status === 'DONE') return false;
+        return new Date(task.dueDate) < new Date(new Date().toDateString());
+    };
     return (
         <div>
             <h3 className="mb-4">My Tasks</h3>
             {tasks.length === 0 && <p className="text-muted">No tasks assigned yet.</p>}
             {tasks.map(t => (
-                <div key={t.id} className="card p-3 mb-3 shadow-sm">
+                <div key={t.id} className={`card p-3 mb-3 shadow-sm ${isOverdue(t) ? 'border-danger' : ''}`}>
                     <div className="d-flex justify-content-between align-items-start">
                         <div>
                             <strong>{t.title}</strong>
-                            <span className={`badge ms-2 ${priorityBadge(t.priority)}`}>{t.priority}</span>
+                            {isOverdue(t) && <span className="badge bg-danger ms-2">Overdue</span>}
                             <div className="text-muted small">{t.description}</div>
                             <div className="text-muted small">Project: {t.projectName}</div>
+                            <div className="text-muted small">Assigned by: {t.assignedByManagerName || 'Unknown'}</div>
                             {t.dueDate && <div className="text-muted small">Due: {t.dueDate}</div>}
                         </div>
                         {editingId !== t.id && (
@@ -61,7 +68,7 @@ function MyTasks() {
                         <div className="progress" style={{ height: '8px' }}>
                             <div className="progress-bar bg-success" style={{ width: `${t.progress || 0}%` }} />
                         </div>
-                        <small className="text-muted">{t.progress || 0}% complete — {t.status}</small>
+                        <small className="text-muted">{t.progress || 0}% complete — {formatStatus(t.status)}</small>
                     </div>
 
                     {editingId === t.id && (
@@ -91,9 +98,17 @@ function EmployeeDashboard({ onLogout }) {
         navigate('/login');
     };
 
-    const tabs = [
-        { path: '/', label: 'My Tasks' },
-    ];
+    const tabs = [];
+    const formatStatus = (status) => {
+        if (status === 'IN_PROGRESS') return 'In Progress';
+        if (status === 'DONE') return 'Done';
+        if (status === 'TODO') return 'To Do';
+        return status;
+    };
+    const isOverdue = (task) => {
+        if (!task.dueDate || task.status === 'DONE') return false;
+        return new Date(task.dueDate) < new Date(new Date().toDateString());
+    };
 
     return (
         <div>

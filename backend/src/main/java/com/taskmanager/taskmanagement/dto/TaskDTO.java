@@ -1,6 +1,5 @@
 package com.taskmanager.taskmanagement.dto;
 
-import com.taskmanager.taskmanagement.entity.Priority;
 import com.taskmanager.taskmanagement.entity.TaskStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,10 +17,11 @@ public class TaskDTO {
     private TaskStatus status;
     private Integer progress;
     private LocalDate dueDate;
-    private Priority priority;
     private String updateNote;
     private Long projectId;
     private String projectName;
     private Long assignedUserId;
     private String assignedUserName;
+    private String assignedByManagerName;
+    private Boolean seenByAssignee;
 }

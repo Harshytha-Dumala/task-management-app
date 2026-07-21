@@ -30,11 +30,11 @@ public class Task {
 
     private LocalDate dueDate;
 
-    @Enumerated(EnumType.STRING)
-    private Priority priority;
+
 
     @Column(length = 1000)
     private String updateNote;
+    private Boolean seenByAssignee = false;
 
     @ManyToOne
     @JoinColumn(name = "project_id")
@@ -43,4 +43,7 @@ public class Task {
     @ManyToOne
     @JoinColumn(name = "assigned_user_id")
     private User assignedUser;
+    @ManyToOne
+    @JoinColumn(name = "assigned_by_id")
+    private User assignedBy;
 }

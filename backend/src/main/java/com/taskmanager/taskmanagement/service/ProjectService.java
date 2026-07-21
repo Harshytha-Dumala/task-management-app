@@ -10,7 +10,8 @@ import java.util.List;
 
 @Service
 public class ProjectService {
-
+    @Autowired
+    private com.taskmanager.taskmanagement.repository.TaskRepository taskRepository;
     @Autowired
     private ProjectRepository projectRepository;
 
@@ -37,6 +38,18 @@ public class ProjectService {
         projectRepository.deleteById(id);
     }
     public ProjectDTO convertToDTO(Project project) {
-        return new ProjectDTO(project.getId(), project.getName(), project.getDescription());
+        List<com.taskmanager.taskmanagement.entity.Task> tasks = taskRepository.findAll().stream()
+                .filter(t -> t.getProject() != null && t.getProject().getId().equals(project.getId()))
+                .toList();
+
+        double avgProgress = 0;
+        if (!tasks.isEmpty()) {
+            avgProgress = tasks.stream()
+                    .mapToInt(t -> t.getProgress() != null ? t.getProgress() : 0)
+                    .average()
+                    .orElse(0);
+        }
+
+        return new ProjectDTO(project.getId(), project.getName(), project.getDescription(), avgProgress);
     }
 }
